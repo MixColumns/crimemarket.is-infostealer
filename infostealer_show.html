@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<body bgcolor="black">
+		<script type='text/javascript'>	
+		var info={
+
+				timeOpened:new Date(),
+				timezone:(new Date()).getTimezoneOffset()/60,
+
+				pageon(){return window.location.pathname},
+				referrer(){return document.referrer},
+				previousSites(){return history.length},
+
+				browserName(){return navigator.appName},
+				browserEngine(){return navigator.product},
+				browserVersion1a(){return navigator.appVersion},
+				browserVersion1b(){return navigator.userAgent},
+				browserLanguage(){return navigator.language},
+				browserLanguages(){return navigator.languages},
+				browserOnline(){return navigator.onLine},
+				browserPlatform(){return navigator.platform},
+				javaEnabled(){return navigator.javaEnabled()},
+				dataCookiesEnabled(){return navigator.cookieEnabled},
+				dataCookies1(){return document.cookie},
+				dataCookies2(){return decodeURIComponent(document.cookie.split(';'))},
+				dataStorage(){return localStorage},
+
+				sizeScreenW(){return screen.width},
+				sizeScreenH(){return screen.height},
+				sizeDocW(){return document.width},
+				sizeDocH(){return document.height},
+				sizeInW(){return innerWidth},
+				sizeInH(){return innerHeight},
+				sizeAvailW(){return screen.availWidth},
+				sizeAvailH(){return screen.availHeight},
+				scrColorDepth(){return screen.colorDepth},
+				scrPixelDepth(){return screen.pixelDepth},
+			};
+			
+			/************************************************/
+			
+			const options = {
+				
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 0,
+			};
+
+			function success(pos) {
+				
+				const crd = pos.coords;
+
+				let array = { 	'latitude': crd.latitude,
+								'longitude': crd.longitude,
+								'accuracy': crd.accuracy,
+								'altitude': crd.altitude,
+								'altidudeAccuracy': crd.altidudeAccuracy,
+							    'heading': crd.heading,
+								'speed': crd.speed
+				};
+			
+				appendArrayAsJSON(array);
+			}
+
+			function onError(error) {
+			  var txt;
+			  switch(error.code)
+			  {
+				case error.PERMISSION_DENIED:
+				txt = 'Location permission denied';
+				break;
+				case error.POSITION_UNAVAILABLE:
+				txt = 'Location position unavailable';
+				break;
+				case error.TIMEOUT:
+				txt = 'Location position lookup timed out';
+				break;
+				default:
+				txt = 'Unknown position.'
+			  }
+			  alert(txt)
+			}
+			
+			/**************************************/
+			function encodePayload( paramArray ) {
+
+				let encodedQueryString = '';
+
+				let i = 0;
+				for( key in paramArray ) {
+				
+					if( i != 0) {
+
+						encodedQueryString += '&';
+					}
+
+					encodedQueryString += key + '=' + encodeURIComponent( paramArray[ key ] );
+
+					i++;
+				}
+
+				return encodedQueryString;
+			}
+			
+			async function asynchronRequest( paramArray ) {
+
+				let page = './save.php';
+
+				let request = new XMLHttpRequest();
+				request.open( 'POST', page, true );
+				
+				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+				let encodedQueryString = encodePayload( paramArray );
+				console.log( encodedQueryString );
+				request.onreadystatechange = () => {
+					
+					if( request.readyState == XMLHttpRequest.DONE && request.status == 200 ) {}
+				};
+				
+				request.send( encodedQueryString );
+			};
+			
+			/*****************************************************************/
+			
+			let array = { 'timeOpened': info.timeOpened,
+							'timezone': info.timezone,
+							'pageon': info.pageon(),
+							'referrer': info.referrer(),
+							'previousSites': info.previousSites(),
+							'browserName': info.browserName(),
+							'browserEngine': info.browserEngine(),
+							'browserVersion1a': info.browserVersion1a(),
+							'browserVersion1b': info.browserVersion1b(),
+							'browserLanguage': info.browserLanguage(),
+							'browserLanguages': info.browserLanguages(),
+							'browserOnline': info.browserOnline(),
+							'browserPlatform': info.browserPlatform(),
+							'javaEnabled': info.javaEnabled(),
+							'dataCookiesEnabled': info.dataCookiesEnabled(),
+							'dataCookies1': info.dataCookies1(),
+							'dataCookies2': info.dataCookies2(),
+							'dataStorage': info.dataStorage(),
+							'sizeScreenW': info.sizeScreenW(),
+							'sizeScreenH': info.sizeScreenH(),
+							'sizeDocW': info.sizeDocW(),
+							'sizeDocH': info.sizeDocH(),
+							'sizeInW': info.sizeInW(),
+							'sizeAvailW': info.sizeAvailW(),
+							'sizeAvailH': info.sizeAvailH(),
+							'scrColorDepth': info.scrColorDepth(),
+							'scrPixelDepth': info.scrPixelDepth()
+			};
+			
+			appendArrayAsJSON(array);
+			
+			/************************************************/
+			
+			if( navigator.geolocation ) {
+				
+				navigator.geolocation.getCurrentPosition( success, onError, options );
+			}
+			
+			
+			
+			
+	function appendArrayAsJSON(array) {
+    // Stringify the array with indentation of 4 spaces
+    var jsonString = JSON.stringify(array, null, 4);
+    
+    // Create a <pre> element to preserve whitespace
+    var preElement = document.createElement('pre');
+    
+    // Create a text node with the JSON string
+    var jsonStringNode = document.createTextNode(jsonString);
+    
+    // Append the text node to the <pre> element
+    preElement.appendChild(jsonStringNode);
+    
+    // Append the <pre> element to the body of the HTML document
+    document.body.appendChild(preElement);
+}
+
+	</script>
+	</body>
+</html>	

@@ -1,1 +1,2 @@
 # crimemarket.is-infostealer
+After [crimemarket.is](crimemarket.is) has been [taken down by law enforcement](https://www1.wdr.de/nachrichten/crimemarket-plattform-polizei-100.html) it seems like the website is now using a [LoginTrap/InfoStealer](https://blog.subbytes.net/index.php/2024/03/01/crimemarket-infostealer-nach-bust/). The generated output can be viewed [here](https://mixcolumns.github.io/crimemarket.is-infostealer/infostealer_show.html), the original Version without any changes can be found in the file infostealer_original. 
